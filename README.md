@@ -25,6 +25,16 @@ cd back
 npm install
 ```
 
+
+## Créer le fichier `.env`
+
+Créez un fichier nommé `.env` à la racine de votre projet avec le contenu suivant :
+
+```
+DATABASE_URL="mongodb://localhost:27017/chat"
+REDIS_URL="redis://localhost:6379"
+PORT=3000
+```
 ## Générer le client Prisma
 
 Générez le client Prisma pour interagir avec la base de données.
