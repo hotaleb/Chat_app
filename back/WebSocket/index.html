@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat WebSocket</title>
+</head>
+<body>
+    <h1>Chat WebSocket</h1>
+    <div id="messages"></div>
+
+    <input id="sender" placeholder="Votre email" />
+    <input id="recipient" placeholder="Email du destinataire" />
+    <textarea id="message" placeholder="Tapez votre message ici..."></textarea>
+    <button id="send">Envoyer</button>
+
+    <script src="https://cdn.socket.io/4.5.3/socket.io.min.js"></script>
+    <script>
+        const socket = io('http://localhost:3000');
+
+        const senderInput = document.getElementById('sender');
+        const recipientInput = document.getElementById('recipient');
+        const messageInput = document.getElementById('message');
+        const sendButton = document.getElementById('send');
+        const messagesDiv = document.getElementById('messages');
+
+        // Envoi d'un message
+        sendButton.addEventListener('click', () => {
+            const sender = senderInput.value;
+            const recipient = recipientInput.value;
+            const text = messageInput.value;
+
+            socket.emit('send_message', { sender, recipient, text });
+            messageInput.value = '';
+        });
+
+        // Réception d'un message
+        socket.on('receive_message', (data) => {
+            const { sender, recipient, text, timestamp } = data;
+            const messageElement = document.createElement('div');
+            messageElement.textContent = `[${new Date(timestamp).toLocaleTimeString()}] ${sender}: ${text}`;
+            messagesDiv.appendChild(messageElement);
+        });
+
+        // Gestion des erreurs
+        socket.on('error', (data) => {
+            alert(data.message);
+        });
+    </script>
+</body>
+</html>

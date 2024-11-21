@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test WebSocket</title>
+</head>
+<body>
+    <h1>Test WebSocket</h1>
+    <script src="https://cdn.socket.io/4.5.3/socket.io.min.js"></script>
+    <script>
+        const socket = io('http://localhost:3000');
+
+        socket.on('connect', () => {
+            console.log('Connecté au WebSocket');
+        });
+
+        socket.on('receive_message', (data) => {
+            console.log('Message reçu :', data);
+        });
+
+        socket.emit('send_message', {
+            sender: 'test@test.com',
+            recipient: 'recipient@test.com',
+            text: 'Hello WebSocket!',
+        });
+    </script>
+</body>
+</html>
